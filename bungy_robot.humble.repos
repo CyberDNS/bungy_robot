@@ -1,0 +1,21 @@
+repositories:
+  dynamixel_sdk:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+    version: humble-devel
+
+  ina219_driver:
+    type: git
+    url: https://github.com/CyberDNS/ros2_ina219.git
+    version: main
+
+  ws2812_driver:
+    type: git
+    url: https://github.com/CyberDNS/ros2_ws2812.git
+    version: main
+
+  ros2_control_dynamixel_ax12a:
+    type: git
+    url: https://github.com/CyberDNS/ros2_control_dynamixel_ax12a.git
+    version: main
+  
