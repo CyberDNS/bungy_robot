@@ -23,7 +23,7 @@ if [ ! -d "$robot_workspace_path" ]; then
   sudo bash -c '
   apt-get --assume-yes install ros-dev-tools ros-humble-gazebo-ros-pkgs ros-humble-joint-state-publisher-gui ros-humble-xacro \
               ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control ros-humble-controller-manager \
-              ros-humble-teleop-twist-keyboard ros-humble-teleop-twist-joy \
+              ros-humble-hardware-interface ros-humble-teleop-twist-keyboard ros-humble-teleop-twist-joy \
               joystick jstest-gtk evtest
   '
 
