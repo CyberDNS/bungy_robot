@@ -15,10 +15,12 @@ Bungy Robot is a ROS 2 Jazzy differential drive robot running on Raspberry Pi 5 
 ## Architecture & Key Components
 
 ### Multi-Workspace Structure
-- `core_ws/`: Shared dependencies workspace (built from `.repos` file)
-- `robot_ws/`: Robot hardware workspace (runs on Raspberry Pi 5)
-- `monitoring_ws/`: Visualization workspace (runs on NUC for monitoring robot/sim)
-- `sim_ws/`: Simulation workspace (Gazebo simulation on NUC)
+All workspaces follow standardized ROS 2 structure: `workspace/src/packages/`, `workspace/setup.bash`
+
+- `core_ws/src/bungy_description/`: Shared robot description (URDF, meshes)
+- `robot_ws/src/bungy_bringup/`: Robot hardware workspace (runs on Raspberry Pi 5)
+- `monitoring_ws/src/bungy_monitoring/`: Visualization workspace (runs on NUC for monitoring robot/sim)
+- `sim_ws/`: Simulation workspace (future - Gazebo simulation on NUC)
 - `bungy_robot_description/`: Legacy Humble description (reference only, do not modify)
 
 ### Control Flow Architecture

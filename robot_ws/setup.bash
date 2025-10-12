@@ -3,6 +3,9 @@
 # Source ROS2 Jazzy environment
 source /opt/ros/jazzy/setup.bash
 
+# Source core workspace for shared robot description
+source ../core_ws/install/setup.bash
+
 # Source local workspace install
 source install/setup.bash
 
