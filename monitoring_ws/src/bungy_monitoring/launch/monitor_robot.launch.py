@@ -25,21 +25,39 @@ def generate_launch_description():
         default_value=os.path.join(bungy_monitoring_dir, 'rviz', 'robot_with_lidar.rviz'),
         description='Path to RVIZ config file'
     )
+
+    # Local robot state publisher using visual URDF
+    from launch.substitutions import Command, PathJoinSubstitution
+    from launch_ros.parameter_descriptions import ParameterValue
+    from launch_ros.substitutions import FindPackageShare
     
-    robot_namespace_arg = DeclareLaunchArgument(
-        'robot_namespace',
-        default_value='/bungy',
-        description='Robot namespace for topics'
+    # Use monitoring-specific visual URDF
+    urdf_path = PathJoinSubstitution([
+        FindPackageShare("bungy_monitoring"), "urdf", "bungy_visual.urdf.xacro"
+    ])
+
+    robot_description = ParameterValue(
+        Command(["xacro", " ", urdf_path]),
+        value_type=str
     )
 
-    # Include namespaced robot state publisher
-    robot_state_publisher_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(bungy_monitoring_dir, 'launch', 'robot_state_publisher_namespaced.launch.py')
-        ]),
-        launch_arguments={
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
-        }.items()
+    # Local robot state publisher for visuals
+    robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        parameters=[{"robot_description": robot_description}],
+        output="screen",
+    )
+
+    # Joint state publisher to connect robot joint states to local robot model
+    joint_state_publisher = Node(
+        package="joint_state_publisher",
+        executable="joint_state_publisher",
+        name="joint_state_publisher",
+        parameters=[{"use_sim_time": LaunchConfiguration('use_sim_time')}],
+        remappings=[("/joint_states", "/bungy/joint_states")],
+        output="screen",
     )
 
     # RVIZ node for visualization
@@ -55,7 +73,7 @@ def generate_launch_description():
     return LaunchDescription([
         use_sim_time_arg,
         rviz_config_arg,
-        robot_namespace_arg,
-        # Robot state publisher on robot side has issues, focusing on available data
+        robot_state_publisher,
+        joint_state_publisher, 
         rviz_node,
     ])

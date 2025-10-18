@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bungy_base">
+  
+  <!-- Robot physical properties - shared constants -->
+  <xacro:property name="wheel_separation" value="0.184" />
+  <xacro:property name="wheel_radius" value="0.06" />
+  <xacro:property name="base_width" value="0.25" />
+  <xacro:property name="base_length" value="0.15" />
+  <xacro:property name="base_height" value="0.1" />
+  
+  <!-- Base link - structural definition only -->
+  <link name="base_link">
+    <!-- No visual or collision - these go in workspace-specific URDFs -->
+    <inertial>
+      <mass value="2.0"/>
+      <inertia ixx="0.02" ixy="0.0" ixz="0.0" iyy="0.05" iyz="0.0" izz="0.06"/>
+    </inertial>
+  </link>
+  
+  <!-- Left wheel link - structural definition only -->
+  <link name="left_wheel_link">
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  
+  <!-- Right wheel link - structural definition only -->
+  <link name="right_wheel_link">
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- Left wheel joint - kinematic structure -->
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel_link"/>
+    <origin xyz="0.0 ${wheel_separation/2} 0.0" rpy="-${pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- Right wheel joint - kinematic structure -->
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel_link"/>
+    <origin xyz="0.0 -${wheel_separation/2} 0.0" rpy="-${pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- LIDAR link - structural definition only -->
+  <link name="laser_link">
+    <inertial>
+      <mass value="0.125"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- LIDAR joint - mounting position -->
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin xyz="0.08 0.0 0.09" rpy="0 0 0"/>
+  </joint>
+
+</robot>

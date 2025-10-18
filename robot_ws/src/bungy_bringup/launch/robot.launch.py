@@ -5,9 +5,9 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
-    # Use robot description from core_ws
+    # Use robot-specific URDF from robot workspace
     urdf_path = PathJoinSubstitution([
-        FindPackageShare("bungy_description"), "urdf", "bungy_robot.urdf.xacro"
+        FindPackageShare("bungy_bringup"), "urdf", "bungy_robot.urdf.xacro"
     ])
 
     robot_description = ParameterValue(

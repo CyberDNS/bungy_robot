@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bungy_robot">
+  
+  <!-- Parameters -->
+  <xacro:arg name="use_ros2_control" default="true" />
+  <xacro:arg name="use_sim_time" default="false" />
+  
+  <!-- Include shared base structure -->
+  <xacro:include filename="$(find bungy_description)/urdf/bungy_base.urdf.xacro" />
+  
+  <!-- Robot-specific: No visual elements needed for hardware -->
+  <!-- The robot doesn't need to render visuals, only publish joint states -->
+  
+  <!-- Conditional ros2_control inclusion -->
+  <xacro:if value="$(arg use_ros2_control)">
+    <xacro:include filename="$(find bungy_bringup)/urdf/bungy_robot.ros2_control.xacro" />
+  </xacro:if>
+
+</robot>
