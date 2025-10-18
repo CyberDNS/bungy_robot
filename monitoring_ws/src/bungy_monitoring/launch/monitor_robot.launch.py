@@ -41,23 +41,25 @@ def generate_launch_description():
         value_type=str
     )
 
-    # Local robot state publisher for visuals
+    # Local robot state publisher for visuals - global namespace for RViz
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        name="robot_state_publisher",
+        name="local_robot_state_publisher", 
         parameters=[{"robot_description": robot_description}],
         output="screen",
     )
 
-    # Joint state publisher to connect robot joint states to local robot model
-    joint_state_publisher = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name="joint_state_publisher",
-        parameters=[{"use_sim_time": LaunchConfiguration('use_sim_time')}],
-        remappings=[("/joint_states", "/bungy/joint_states")],
-        output="screen",
+    # Robot is already publishing joint states at /bungy/joint_states
+    # Our namespaced robot_state_publisher will use them automatically
+
+    # Static transform to bridge robot's TF tree with our local visual tree
+    tf_bridge = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='tf_bridge',
+        arguments=['0', '0', '0', '0', '0', '0', 'bungy/base_link', 'base_link'],
+        output='screen'
     )
 
     # RVIZ node for visualization
@@ -74,6 +76,6 @@ def generate_launch_description():
         use_sim_time_arg,
         rviz_config_arg,
         robot_state_publisher,
-        joint_state_publisher, 
+        tf_bridge,
         rviz_node,
     ])

@@ -74,8 +74,8 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /bungy/robot_description
-      Enabled: false
+        Value: /robot_description
+      Enabled: true
       Links:
         All Links Enabled: false
         Expand Joint Details: false
@@ -132,19 +132,19 @@ Visualization Manager:
     - Class: rviz_default_plugins/Odometry
       Angle Tolerance: 0.1
       Color: 255; 25; 0
-      Enabled: true
-      Keep: 100
+      Enabled: false
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.1
       Shape:
         Alpha: 1
-        Axes Length: 1
-        Axes Radius: 0.1
+        Axes Length: 0.3
+        Axes Radius: 0.03
         Color: 255; 25; 0
-        Head Length: 0.3
-        Head Radius: 0.1
-        Shaft Length: 1
-        Shaft Radius: 0.05
+        Head Length: 0.1
+        Head Radius: 0.03
+        Shaft Length: 0.3
+        Shaft Radius: 0.015
         Value: Arrow
       Topic:
         Depth: 5
@@ -157,7 +157,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: bungy/base_link
+    Fixed Frame: bungy/odom
     Frame Rate: 30
   Name: root
   Tools:
