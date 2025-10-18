@@ -1,6 +1,6 @@
 /bungy/controller_manager:
   ros__parameters:
-    update_rate: 30.0
+    update_rate: 30
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster

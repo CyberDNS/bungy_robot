@@ -4,7 +4,7 @@
   <ros2_control name="DynamixelHw" type="system">
     <hardware>
       <plugin>dynamixel_hw/DynamixelHw</plugin>
-      <param name="usb_port">/dev/ttyUSB0</param>
+      <param name="usb_port">/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT78LS5T-if00-port0</param>
       <param name="baud_rate">1000000</param>
       <param name="left_wheel_name">left_wheel_joint</param>
       <param name="right_wheel_name">right_wheel_joint</param>
