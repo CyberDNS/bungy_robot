@@ -5,9 +5,9 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
-    # Use robot-specific URDF from robot workspace
+    # Use robot description from core_ws
     urdf_path = PathJoinSubstitution([
-        FindPackageShare("bungy_bringup"), "urdf", "bungy_robot.urdf.xacro"
+        FindPackageShare("bungy_description"), "urdf", "bungy_robot.urdf.xacro"
     ])
 
     robot_description = ParameterValue(
@@ -67,10 +67,26 @@ def generate_launch_description():
         ],
     )
 
+    # RPLIDAR driver
+    rplidar_node = Node(
+        package="rplidar_ros",
+        executable="rplidar_composition",
+        name="rplidar_node",
+        parameters=[{
+            "serial_port": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
+            "serial_baudrate": 115200,
+            "frame_id": "laser_link",
+            "inverted": False,
+            "angle_compensate": True,
+        }],
+        output="screen",
+    )
+
     return LaunchDescription([
         robot_state_publisher,
         controller_manager,
         joint_state_broadcaster_spawner,
         diff_drive_controller_spawner,
         twist_relay,
+        rplidar_node,
     ])
