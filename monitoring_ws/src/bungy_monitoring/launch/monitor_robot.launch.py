@@ -12,7 +12,6 @@ from launch_ros.actions import Node
 def generate_launch_description():
     # Package directories
     bungy_monitoring_dir = get_package_share_directory('bungy_monitoring')
-    bungy_description_dir = get_package_share_directory('bungy_description')
     
     # Launch arguments
     use_sim_time_arg = DeclareLaunchArgument(
@@ -23,7 +22,7 @@ def generate_launch_description():
     
     rviz_config_arg = DeclareLaunchArgument(
         'rviz_config',
-        default_value=os.path.join(bungy_monitoring_dir, 'rviz', 'monitoring_view.rviz'),
+        default_value=os.path.join(bungy_monitoring_dir, 'rviz', 'robot_with_lidar.rviz'),
         description='Path to RVIZ config file'
     )
     
@@ -33,14 +32,13 @@ def generate_launch_description():
         description='Robot namespace for topics'
     )
 
-    # Include robot state publisher from bungy_description
+    # Include namespaced robot state publisher
     robot_state_publisher_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            os.path.join(bungy_description_dir, 'launch', 'robot_state_publisher.launch.py')
+            os.path.join(bungy_monitoring_dir, 'launch', 'robot_state_publisher_namespaced.launch.py')
         ]),
         launch_arguments={
             'use_sim_time': LaunchConfiguration('use_sim_time'),
-            'use_ros2_control': 'false'  # No hardware control in monitoring
         }.items()
     )
 
