@@ -56,6 +56,6 @@ def generate_launch_description():
         use_sim_time_arg,
         rviz_config_arg,
         robot_namespace_arg,
-        robot_state_publisher_launch,
+        # Robot state publisher on robot side has issues, focusing on available data
         rviz_node,
     ])
