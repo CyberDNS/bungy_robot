@@ -10,8 +10,10 @@ echo "🚀 Bungy Robot - Update and Monitor Script"
 echo "=========================================="
 
 # Check if we're in the right directory
-if [ ! -f "bungy_robot.humble.repos" ]; then
+if [ ! -d "monitoring_ws" ] || [ ! -d "core_ws" ]; then
     echo "❌ Error: Please run this script from the bungy_robot root directory"
+    echo "   Expected directories: monitoring_ws, core_ws"
+    echo "   Current directory: $(pwd)"
     exit 1
 fi
 
@@ -20,11 +22,6 @@ git pull
 
 echo "🔧 Building core workspace..."
 cd core_ws
-if [ ! -d "src" ]; then
-    echo "📦 Setting up core dependencies..."
-    vcs import < ../bungy_robot.humble.repos
-    rosdep install --from-paths src -y --ignore-src
-fi
 colcon build
 cd ..
 
