@@ -133,10 +133,60 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/Odometry
+      Angle Tolerance: 0.1
+      Color: 0; 255; 0
+      Enabled: true
+      Keep: 100
+      Name: EKF_Odometry
+      Position Tolerance: 0.1
+      Shape:
+        Alpha: 1
+        Axes Length: 0.3
+        Axes Radius: 0.03
+        Color: 0; 255; 0
+        Head Length: 0.1
+        Head Radius: 0.03
+        Shaft Length: 0.3
+        Shaft Radius: 0.015
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /bungy/odometry/filtered
+      Value: true
+    - Class: rviz_default_plugins/Odometry
+      Angle Tolerance: 0.1
+      Color: 255; 25; 0
+      Enabled: false
+      Keep: 100
+      Name: Raw_Odometry
+      Position Tolerance: 0.1
+      Shape:
+        Alpha: 0.5
+        Axes Length: 0.2
+        Axes Radius: 0.02
+        Color: 255; 25; 0
+        Head Length: 0.08
+        Head Radius: 0.02
+        Shaft Length: 0.2
+        Shaft Radius: 0.01
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /bungy/diff_cont/odom
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
+    Fixed Frame: bungy/odom
     Frame Rate: 30
   Name: root
   Tools:

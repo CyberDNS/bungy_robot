@@ -1,0 +1,79 @@
+/**:
+  ros__parameters:
+    # EKF configuration for sensor fusion between wheel odometry and IMU
+    
+    # Basic configuration
+    frequency: 30.0
+    sensor_timeout: 0.1
+    two_d_mode: true
+    transform_time_offset: 0.0
+    transform_timeout: 0.0
+    print_diagnostics: true
+    debug: false
+    
+    # Frame configuration
+    map_frame: map
+    odom_frame: bungy/odom
+    base_link_frame: bungy/base_link
+    world_frame: bungy/odom
+    
+    # Wheel odometry configuration
+    # Subscribe to wheel odometry from differential drive controller
+    odom0: /bungy/diff_cont/odom
+    odom0_config: [false, false, false,    # x, y, z position (don't use position from wheels)
+                   false, false, false,    # roll, pitch, yaw orientation (don't use orientation from wheels) 
+                   true,  true,  false,    # x_dot, y_dot, z_dot velocity (use linear velocities)
+                   false, false, true,     # roll_dot, pitch_dot, yaw_dot (use angular velocity)
+                   false, false, false]    # x_ddot, y_ddot, z_ddot acceleration
+    odom0_queue_size: 5
+    odom0_nodelay: false
+    odom0_differential: false
+    odom0_relative: false
+    
+    # IMU configuration
+    # Subscribe to IMU data for orientation
+    imu0: /bno055/imu
+    imu0_config: [false, false, false,     # x, y, z position
+                  false, false, true,      # roll, pitch, yaw orientation (use yaw from IMU)
+                  false, false, false,     # x_dot, y_dot, z_dot velocity  
+                  false, false, false,     # roll_dot, pitch_dot, yaw_dot
+                  false, false, false]     # x_ddot, y_ddot, z_ddot acceleration
+    imu0_queue_size: 5
+    imu0_nodelay: false
+    imu0_differential: false
+    imu0_relative: true
+    imu0_remove_gravitational_acceleration: true
+    
+    # Process noise covariance matrix
+    process_noise_covariance: [0.05, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.05, 0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.06, 0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.03, 0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.03, 0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.06, 0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.025, 0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.025, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.04, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.01, 0.0,  0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.01, 0.0,  0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.02, 0.0,  0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.01, 0.0,  0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.01, 0.0,
+                               0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,   0.0,   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.015]
+    
+    # Initial state covariance
+    initial_estimate_covariance: [1.0e-9, 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    1.0e-9, 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   1.0e-9, 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   1.0e-9, 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   1.0e-9, 0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   1.0e-9, 0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   1.0e-9, 0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1.0e-9, 0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1.0e-9, 0.0,    0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1.0e-9,  0.0,    0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    1.0e-9,  0.0,    0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    1.0e-9,  0.0,   0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    1.0e-9, 0.0,   0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   1.0e-9, 0.0,
+                                  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,    0.0,   0.0,   1.0e-9]
