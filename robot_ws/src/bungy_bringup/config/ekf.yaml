@@ -10,6 +10,8 @@
     transform_timeout: 0.0
     print_diagnostics: true
     debug: false
+    publish_tf: true
+    publish_acceleration: false
     
     # Frame configuration
     map_frame: map
@@ -20,8 +22,8 @@
     # Wheel odometry configuration
     # Subscribe to wheel odometry from differential drive controller
     odom0: /bungy/diff_cont/odom
-    odom0_config: [false, false, false,    # x, y, z position (don't use position from wheels)
-                   false, false, false,    # roll, pitch, yaw orientation (don't use orientation from wheels) 
+    odom0_config: [true,  true,  false,    # x, y, z position (use x,y position from wheels)
+                   false, false, false,    # roll, pitch, yaw orientation (don't use orientation from wheels - use IMU instead) 
                    true,  true,  false,    # x_dot, y_dot, z_dot velocity (use linear velocities)
                    false, false, true,     # roll_dot, pitch_dot, yaw_dot (use angular velocity)
                    false, false, false]    # x_ddot, y_ddot, z_ddot acceleration
