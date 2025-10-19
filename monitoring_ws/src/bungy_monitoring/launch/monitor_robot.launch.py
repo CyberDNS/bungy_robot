@@ -26,32 +26,11 @@ def generate_launch_description():
         description='Path to RVIZ config file'
     )
 
-    # Local robot state publisher using visual URDF
-    from launch.substitutions import Command, PathJoinSubstitution
-    from launch_ros.parameter_descriptions import ParameterValue
-    from launch_ros.substitutions import FindPackageShare
-    
-    # Use monitoring-specific visual URDF
-    urdf_path = PathJoinSubstitution([
-        FindPackageShare("bungy_monitoring"), "urdf", "bungy_visual.urdf.xacro"
-    ])
+    # Robot description and TF transforms are provided by the robot itself
+    # We don't need to load them locally since we use the robot's namespaced frames directly
 
-    robot_description = ParameterValue(
-        Command(["xacro", " ", urdf_path]),
-        value_type=str
-    )
-
-    # Local robot state publisher for visuals - global namespace for RViz
-    robot_state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        name="local_robot_state_publisher", 
-        parameters=[{"robot_description": robot_description}],
-        output="screen",
-    )
-
-    # Robot is already publishing joint states at /bungy/joint_states
-    # Our namespaced robot_state_publisher will use them automatically
+    # Robot is already publishing joint states at /bungy/joint_states and TF transforms
+    # We don't need a local robot_state_publisher since we use the robot's namespaced frames directly
 
     # Static transform to bridge robot's TF tree with our local visual tree
     tf_bridge = Node(
@@ -75,7 +54,6 @@ def generate_launch_description():
     return LaunchDescription([
         use_sim_time_arg,
         rviz_config_arg,
-        robot_state_publisher,
         tf_bridge,
         rviz_node,
     ])

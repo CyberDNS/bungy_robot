@@ -28,6 +28,9 @@ def generate_launch_description():
         executable="robot_state_publisher",
         namespace="bungy",
         parameters=[{"robot_description": robot_description, "frame_prefix": "bungy/"}],
+        remappings=[
+            ("joint_states", "/bungy/joint_states"),
+        ],
         output="screen",
     )
 
