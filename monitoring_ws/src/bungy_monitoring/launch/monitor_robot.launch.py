@@ -26,8 +26,9 @@ def generate_launch_description():
         description='Path to RVIZ config file'
     )
 
-    # Local robot state publisher for RViz visualization
-    # This needs to match the robot's frame prefix to avoid conflicts
+    # Local robot state publisher for RViz visualization  
+    # This publishes to global /robot_description for RViz but doesn't publish TF
+    # The robot itself publishes the actual TF transforms in bungy/ namespace
     from launch.substitutions import Command, PathJoinSubstitution
     from launch_ros.parameter_descriptions import ParameterValue
     from launch_ros.substitutions import FindPackageShare
@@ -42,16 +43,12 @@ def generate_launch_description():
         value_type=str
     )
 
-    # Local robot state publisher for visuals - use same namespace and frame prefix as robot
+    # Local robot state publisher for RViz visuals only - no TF publishing
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="local_robot_state_publisher",
-        namespace="bungy", 
-        parameters=[{"robot_description": robot_description, "frame_prefix": "bungy/"}],
-        remappings=[
-            ("joint_states", "/bungy/joint_states"),
-        ],
+        parameters=[{"robot_description": robot_description, "publish_tf": False}],
         output="screen",
     )
 
