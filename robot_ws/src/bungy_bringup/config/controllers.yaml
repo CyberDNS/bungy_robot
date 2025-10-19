@@ -12,7 +12,7 @@
   ros__parameters:
     publish_rate: 30.0
     base_frame_id: base_link
-    odom_frame_id: bungy/odom
+    odom_frame_id: odom
     enable_odom_tf: false  # Let EKF publish the odom->base_link transform instead
     
     left_wheel_names:  [left_wheel_joint]

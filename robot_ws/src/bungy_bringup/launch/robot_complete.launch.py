@@ -27,7 +27,7 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         namespace="bungy",
-        parameters=[{"robot_description": robot_description}],
+        parameters=[{"robot_description": robot_description, "frame_prefix": "bungy/"}],
         output="screen",
     )
 
@@ -97,6 +97,7 @@ def generate_launch_description():
             "frame_id": "imu_link",
             "data_query_frequency": 10,
             "calib_status_frequency": 0.1,
+            "operation_mode": 8,  # IMU mode (gyro + accel only, no magnetometer)
         }],
     )
 
@@ -133,6 +134,7 @@ def generate_launch_description():
         package="robot_localization",
         executable="ekf_node",
         name="ekf_filter_node",
+        namespace="bungy",
         output="screen",
         parameters=[ekf_config],
         remappings=[

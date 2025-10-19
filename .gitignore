@@ -1,3 +1,6 @@
 *_ws/install/
 *_ws/build/
 *_ws/log/
+
+frames_*.gv
+frames_*.pdf
