@@ -24,8 +24,25 @@ workspace_name/
 **Workspaces:**
 - **`core_ws/src/bungy_description/`**: Shared robot description (URDF, meshes)
 - **`robot_ws/src/bungy_bringup/`**: Robot hardware workspace (runs on Raspberry Pi 5)
-- **`monitoring_ws/src/bungy_monitoring/`**: Visualization workspace (runs on NUC for monitoring)
+- **`monitoring_ws/src/bungy_monitoring/`**: Visualization workspace (runs on the NUC dev machine)
 - **`sim_ws/`**: Simulation workspace (future - will run on NUC)
+
+## Machines
+
+The project runs on two machines that share one ROS 2 network (`ROS_DOMAIN_ID=42`):
+
+| Machine | Role | Workspaces | Build |
+|---|---|---|---|
+| **Raspberry Pi 5** (robot) | Runs the real hardware: Dynamixel drive, RPLIDAR, BNO055 IMU, joystick, EKF | `core_ws`, `robot_ws` | `./build.sh pi` |
+| **NUC** (Ubuntu Linux, ROS 2 Jazzy) | Development machine: RViz monitoring, remote teleop, future Gazebo simulation | `core_ws`, `monitoring_ws`, (`sim_ws`) | `./build.sh dev` |
+
+`core_ws` (`bungy_description`) is the shared robot model and is built on both.
+Hardware-only dependencies (`rplidar_ros`, `bno055`, the Dynamixel ros2_control driver)
+are needed on the Pi only; RViz, rqt and teleop tools are needed on the NUC only.
+
+Machine-specific settings (`ROBOT_IP`, `DYNAMIXEL_WS`) are not stored in the repo.
+On each machine run `cp bungy.env.example bungy.env.local` and edit it; the file is
+git-ignored and sourced by the setup scripts.
 
 ## Quick Start
 
@@ -40,6 +57,8 @@ cd bungy_robot
 ./build.sh
 
 # Or build specific workspaces
+./build.sh pi        # On the Raspberry Pi: core + robot
+./build.sh dev       # On the NUC: core + monitoring
 ./build.sh core      # Build only core workspace
 ./build.sh robot     # Build only robot workspace  
 ./build.sh monitoring # Build only monitoring workspace
@@ -58,7 +77,7 @@ ros2 launch bungy_bringup robot_with_joystick.launch.py
 ros2 launch bungy_bringup robot.launch.py
 ```
 
-### 3. Monitoring from NUC PC
+### 3. Monitoring from the NUC (Ubuntu dev machine)
 
 ```bash
 cd monitoring_ws
@@ -68,7 +87,7 @@ source setup.bash
 ros2 launch bungy_monitoring monitor_robot.launch.py
 
 # OR remote control + monitoring
-ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=192.168.1.100
+ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP
 ```
 
 ## Network Configuration
@@ -106,7 +125,7 @@ ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=192.168.1.100
 ```
 Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel (Twist)
                                                      ↓
-twist_to_stamped_relay.py → /bungy/diff_cont/cmd_vel (TwistStamped)
+twist_to_stamped_relay → /bungy/diff_cont/cmd_vel (TwistStamped)
                                                      ↓
                            ros2_control → Dynamixel Hardware
 ```
@@ -124,6 +143,17 @@ The enhanced build script provides flexible workspace management:
 ./build.sh core clean   # Clean only core_ws
 ./build.sh --help       # Show usage
 ```
+
+### Deploying to the robot (from the NUC)
+
+```bash
+./deploy.sh --dry-run   # preview what would be uploaded
+./deploy.sh --build     # upload the working tree to the Pi and run ./build.sh pi there
+./deploy.sh --prune     # additionally delete files on the Pi that no longer exist here
+```
+
+This uploads your working tree over SSH (no commit/push needed), which makes it quick to
+test changes. It reads `ROBOT_SSH_HOST` (or `ROBOT_USER`/`ROBOT_IP`) from `bungy.env.local`.
 
 ## Monitoring Tools
 

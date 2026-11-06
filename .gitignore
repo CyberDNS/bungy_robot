@@ -4,3 +4,5 @@
 
 frames_*.gv
 frames_*.pdf
+# Machine-specific settings (copy from bungy.env.example)
+bungy.env.local

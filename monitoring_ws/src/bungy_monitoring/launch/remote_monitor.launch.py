@@ -16,7 +16,7 @@ def generate_launch_description():
     # Launch arguments
     robot_ip_arg = DeclareLaunchArgument(
         'robot_ip',
-        default_value='192.168.1.100',  # Default robot IP
+        default_value=os.environ.get('ROBOT_IP', ''),  # from bungy.env.local
         description='IP address of the robot'
     )
     

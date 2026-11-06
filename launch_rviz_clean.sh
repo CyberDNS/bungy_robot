@@ -21,7 +21,7 @@ export LD_LIBRARY_PATH="/opt/ros/jazzy/lib:/usr/lib/x86_64-linux-gnu:/lib/x86_64
 source /opt/ros/jazzy/setup.bash
 
 # Navigate to monitoring workspace
-cd /home/david/repos/bungy_robot/monitoring_ws
+cd "$(dirname "$0")/monitoring_ws"
 source setup.bash
 
 echo "Launching RVIZ2 with clean environment..."

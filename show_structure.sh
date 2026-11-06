@@ -5,7 +5,7 @@ echo ""
 echo "All workspaces now follow standard ROS 2 structure:"
 echo ""
 
-cd /home/david/repos/bungy_robot
+cd "$(dirname "$0")"
 
 for ws in core_ws robot_ws monitoring_ws; do
     echo "📁 $ws/"

@@ -13,10 +13,13 @@ source install/setup.bash
 # Both robot and monitoring PC should use the same domain ID
 export ROS_DOMAIN_ID=42
 
-# Set robot IP for network communication (adjust as needed)
-# This should match your robot's IP address
-export ROS_MASTER_URI=http://192.168.1.100:11311  # For ROS 1 compatibility tools
-export ROBOT_IP=192.168.1.100
+# Machine-specific settings (ROBOT_IP) come from the git-ignored bungy.env.local
+BUNGY_ENV="$(dirname "${BASH_SOURCE[0]}")/../bungy.env.local"
+if [ -f "$BUNGY_ENV" ]; then
+    set -a; source "$BUNGY_ENV"; set +a
+else
+    echo "WARNING: bungy.env.local not found. Run: cp bungy.env.example bungy.env.local"
+fi
 
 # Optional: Set specific network interface if needed
 # export ROS_LOCALHOST_ONLY=0

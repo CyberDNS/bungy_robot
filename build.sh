@@ -33,6 +33,8 @@ show_usage() {
     echo "  core        - Build core_ws (bungy_description)"
     echo "  robot       - Build robot_ws (bungy_bringup)"  
     echo "  monitoring  - Build monitoring_ws (bungy_monitoring)"
+    echo "  pi          - Raspberry Pi: core_ws + robot_ws"
+    echo "  dev         - NUC/Ubuntu dev+sim machine: core_ws + monitoring_ws"
     echo "  all         - Build all workspaces (default)"
     echo ""
     echo "Actions:"
@@ -54,6 +56,13 @@ fi
 
 WORKSPACE=${1:-all}
 ACTION=${2:-build}
+
+# Machine profiles: re-run this script once per workspace
+if [ "$WORKSPACE" = "pi" ] || [ "$WORKSPACE" = "dev" ]; then
+    if [ "$WORKSPACE" = "pi" ]; then SET="core robot"; else SET="core monitoring"; fi
+    for ws in $SET; do "$0" "$ws" "$ACTION" || exit 1; done
+    exit 0
+fi
 
 print_status "Bungy Robot Build System"
 echo "Workspace: $WORKSPACE" 

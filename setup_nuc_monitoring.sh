@@ -10,8 +10,14 @@ echo ""
 export ROS_DOMAIN_ID=42
 echo "✓ Set ROS_DOMAIN_ID=42"
 
-# Robot IP (update this to match your robot's actual IP)
-ROBOT_IP="192.168.3.110"
+# Robot address comes from the git-ignored bungy.env.local
+ENV_FILE="$(cd "$(dirname "$0")" && pwd)/bungy.env.local"
+if [ ! -f "$ENV_FILE" ]; then
+    echo "❌ $ENV_FILE not found. Run: cp bungy.env.example bungy.env.local and set ROBOT_IP"
+    exit 1
+fi
+set -a; source "$ENV_FILE"; set +a
+if [ -z "$ROBOT_IP" ]; then echo "❌ ROBOT_IP not set in bungy.env.local"; exit 1; fi
 echo "✓ Robot IP: $ROBOT_IP"
 
 echo ""
@@ -50,7 +56,7 @@ if [ $? -eq 0 ]; then
     echo "=== Ready to Launch Monitoring ==="
     echo ""
     echo "To start monitoring, run:"
-    echo "  cd /home/\$USER/bungy_robot/monitoring_ws"
+    echo "  cd '$(cd "$(dirname "$0")" && pwd)'/monitoring_ws"
     echo "  source setup.bash"
     echo "  ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP"
     echo ""

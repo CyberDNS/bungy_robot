@@ -27,12 +27,12 @@ All workspaces follow standardized ROS 2 structure: `workspace/src/packages/`, `
 ```
 Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel (Twist)
                                                      ↓
-twist_to_stamped_relay.py → /bungy/diff_cont/cmd_vel (TwistStamped)
+twist_to_stamped_relay → /bungy/diff_cont/cmd_vel (TwistStamped)
                                                      ↓
                            ros2_control → Dynamixel Hardware
 ```
 
-The **critical insight**: Standard teleop nodes publish `Twist` messages, but the diff_drive_controller expects `TwistStamped`. The `twist_to_stamped_relay.py` node bridges this gap.
+The **critical insight**: Standard teleop nodes publish `Twist` messages, but the diff_drive_controller expects `TwistStamped`. The `twist_to_stamped_relay` node bridges this gap.
 
 ## Build & Development Workflows
 

@@ -17,7 +17,7 @@ source setup.bash
 ros2 launch bungy_monitoring monitor_robot.launch.py
 
 # OR launch with remote control
-ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=192.168.1.100
+ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP
 ```
 
 ## What's Included
