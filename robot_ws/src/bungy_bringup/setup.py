@@ -16,10 +16,6 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         # Install config files
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
-        # Install urdf files
-        (os.path.join('share', package_name, 'urdf'), glob('urdf/*.xacro')),
-        # Install scripts to lib directory for ROS 2 compatibility
-        (os.path.join('lib', package_name), glob(os.path.join(package_name, '*.py'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
