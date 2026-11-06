@@ -19,7 +19,12 @@
     left_wheel_names:  [left_wheel_joint]
     right_wheel_names: [right_wheel_joint]
 
-    wheel_separation: 0.184
+    # Spin tests (2026-11-06, BNO055 IMU as reference, 1.0 rad/s commanded for 3.14 s):
+    #   wheel_separation 0.2865 -> real 259.5 deg, 0.19 -> real 145.2 deg (180 commanded)
+    # Interpolated to ~0.22 for an accurate half turn at 1.0 rad/s. This is an empirical
+    # command gain, not the geometric spacing (~0.19 m): real turning depends on wheel speed
+    # (slower turns under-rotate, faster ones over-rotate). The EKF takes yaw from the IMU.
+    wheel_separation: 0.22
     wheel_radius: 0.06
     use_stamped_vel: true
     

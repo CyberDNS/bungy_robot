@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Drive straight for a short, fixed time and stop.
+"""Drive (or spin) for a short, fixed time and stop.
 
-Usage: ros2 run bungy_bringup drive_straight_test [--ros-args -p speed:=0.2 -p duration:=2.0]
+Usage: ros2 run bungy_bringup drive_straight_test [--ros-args -p speed:=0.2 -p angular:=0.0 -p duration:=2.0]
+Spin test: -p speed:=0.0 -p angular:=0.5 -p duration:=6.28  (about 180 deg)
 Publishes Twist on /cmd_vel (the twist_to_stamped_relay forwards it to the controller).
 """
 import rclpy
@@ -13,8 +14,10 @@ class DriveStraightTest(Node):
     def __init__(self):
         super().__init__('drive_straight_test')
         self.declare_parameter('speed', 0.2)      # m/s
+        self.declare_parameter('angular', 0.0)    # rad/s
         self.declare_parameter('duration', 2.0)   # s
         self.speed = self.get_parameter('speed').value
+        self.angular = self.get_parameter('angular').value
         self.duration = self.get_parameter('duration').value
 
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -31,12 +34,14 @@ class DriveStraightTest(Node):
                 return
             self.start = now
             self.get_logger().info(
-                f'Driving straight at {self.speed} m/s for {self.duration} s')
+                f'Driving at {self.speed} m/s, turning {self.angular} rad/s '
+                f'for {self.duration} s')
 
         elapsed = (now - self.start).nanoseconds / 1e9
         msg = Twist()
         if elapsed < self.duration:
             msg.linear.x = self.speed
+            msg.angular.z = self.angular
             self.publisher.publish(msg)
         else:
             # Send several stop commands, then finish
