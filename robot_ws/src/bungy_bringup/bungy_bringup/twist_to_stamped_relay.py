@@ -11,7 +11,7 @@ class TwistToStampedRelay(Node):
         # Parameters (for flexibility)
         self.declare_parameter("input_topic", "/cmd_vel")
         self.declare_parameter("output_topic", "/bungy/diff_cont/cmd_vel")
-        self.declare_parameter("frame_id", "base_link")
+        self.declare_parameter("frame_id", "bungy/base_link")
 
         input_topic = self.get_parameter("input_topic").get_parameter_value().string_value
         output_topic = self.get_parameter("output_topic").get_parameter_value().string_value

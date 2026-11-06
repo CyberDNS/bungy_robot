@@ -63,13 +63,13 @@ def generate_launch_description():
     # Twist to stamped relay
     twist_relay = Node(
         package="bungy_bringup",
-        executable="twist_to_stamped_relay.py",
+        executable="twist_to_stamped_relay",
         name="twist_to_stamped_relay",
         output="screen",
         parameters=[
             {"input_topic": "/cmd_vel"},
             {"output_topic": "/bungy/diff_cont/cmd_vel"},
-            {"frame_id": "base_link"},
+            {"frame_id": "bungy/base_link"},
         ],
     )
 
@@ -81,7 +81,7 @@ def generate_launch_description():
         output="screen",
         parameters=[{
             "serial_port": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
-            "frame_id": "laser_link",
+            "frame_id": "bungy/laser_link",
             "angle_compensate": True,
             "scan_frequency": 7.0,
         }],
@@ -97,7 +97,7 @@ def generate_launch_description():
             "connection_type": "i2c",
             "i2c_bus": 1,
             "i2c_addr": 40,
-            "frame_id": "imu_link",
+            "frame_id": "bungy/imu_link",
             "data_query_frequency": 10,
             "calib_status_frequency": 0.1,
             "operation_mode": 8,  # IMU mode (gyro + accel only, no magnetometer)

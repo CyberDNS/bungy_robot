@@ -30,7 +30,7 @@ class TurnTest(Node):
             self.get_logger().warn(
                 f"No subscriber on {TOPIC} after timeout; publishing anyway (check controller active & topic)")
         msg = TwistStamped()
-        msg.header.frame_id = 'base_link'
+        msg.header.frame_id = 'bungy/base_link'
         period = 1.0 / rate_hz
         end = time.time() + duration
 

@@ -24,7 +24,7 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         namespace="bungy",
-        parameters=[{"robot_description": robot_description}],
+        parameters=[{"robot_description": robot_description, "frame_prefix": "bungy/"}],
         output="screen",
     )
 
@@ -57,13 +57,13 @@ def generate_launch_description():
     # Twist to stamped relay
     twist_relay = Node(
         package="bungy_bringup",
-        executable="twist_to_stamped_relay.py",
+        executable="twist_to_stamped_relay",
         name="twist_to_stamped_relay",
         output="screen",
         parameters=[
             {"input_topic": "/cmd_vel"},
             {"output_topic": "/bungy/diff_cont/cmd_vel"},
-            {"frame_id": "base_link"},
+            {"frame_id": "bungy/base_link"},
         ],
     )
 
@@ -75,7 +75,7 @@ def generate_launch_description():
         parameters=[{
             "serial_port": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
             "serial_baudrate": 115200,
-            "frame_id": "laser_link",
+            "frame_id": "bungy/laser_link",
             "inverted": False,
             "angle_compensate": True,
         }],

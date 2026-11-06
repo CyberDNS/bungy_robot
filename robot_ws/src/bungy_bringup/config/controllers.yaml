@@ -11,8 +11,9 @@
 /bungy/diff_cont:
   ros__parameters:
     publish_rate: 30.0
-    base_frame_id: base_link
-    odom_frame_id: odom
+    tf_frame_prefix_enable: false  # frames below are already fully qualified
+    base_frame_id: bungy/base_link
+    odom_frame_id: bungy/odom
     enable_odom_tf: false  # Let EKF publish the odom->base_link transform instead
     
     left_wheel_names:  [left_wheel_joint]
@@ -20,7 +21,7 @@
 
     wheel_separation: 0.184
     wheel_radius: 0.06
-    use_stamped_vel: false
+    use_stamped_vel: true
     
     # Wheel calibration for drift compensation
     left_wheel_radius_multiplier: 1.0
