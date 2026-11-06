@@ -1,60 +1,65 @@
 #!/usr/bin/env python3
+"""Drive straight for a short, fixed time and stop.
 
+Usage: ros2 run bungy_bringup drive_straight_test [--ros-args -p speed:=0.2 -p duration:=2.0]
+Publishes Twist on /cmd_vel (the twist_to_stamped_relay forwards it to the controller).
+"""
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
-import time
 
 
 class DriveStraightTest(Node):
     def __init__(self):
         super().__init__('drive_straight_test')
-        
-        # Publisher to send velocity commands
+        self.declare_parameter('speed', 0.2)      # m/s
+        self.declare_parameter('duration', 2.0)   # s
+        self.speed = self.get_parameter('speed').value
+        self.duration = self.get_parameter('duration').value
+
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-        
-        # Wait a moment for publisher to be ready
-        time.sleep(0.5)
-        
-        self.get_logger().info('Starting 2-second straight drive test...')
-        
-        # Create velocity message
-        twist_msg = Twist()
-        twist_msg.linear.x = 0.2  # 0.2 m/s forward
-        twist_msg.linear.y = 0.0
-        twist_msg.linear.z = 0.0
-        twist_msg.angular.x = 0.0
-        twist_msg.angular.y = 0.0
-        twist_msg.angular.z = 0.0  # No rotation
-        
-        # Publish velocity commands for 2 seconds
-        start_time = time.time()
-        rate = self.create_rate(10)  # 10 Hz
-        
-        while time.time() - start_time < 2.0:
-            self.publisher.publish(twist_msg)
-            self.get_logger().info(f'Driving straight... {time.time() - start_time:.1f}s')
-            rate.sleep()
-        
-        # Stop the robot
-        stop_msg = Twist()  # All zeros
-        for _ in range(5):  # Send stop command multiple times
-            self.publisher.publish(stop_msg)
-            time.sleep(0.1)
-        
-        self.get_logger().info('Drive test completed. Robot stopped.')
+        self.start = None
+        self.stop_count = 0
+        self.done = False
+        self.create_timer(0.1, self.tick)  # 10 Hz
+
+    def tick(self):
+        now = self.get_clock().now()
+        if self.start is None:
+            # Wait until the relay is subscribed so the first command isn't lost
+            if self.publisher.get_subscription_count() == 0:
+                return
+            self.start = now
+            self.get_logger().info(
+                f'Driving straight at {self.speed} m/s for {self.duration} s')
+
+        elapsed = (now - self.start).nanoseconds / 1e9
+        msg = Twist()
+        if elapsed < self.duration:
+            msg.linear.x = self.speed
+            self.publisher.publish(msg)
+        else:
+            # Send several stop commands, then finish
+            self.publisher.publish(msg)
+            self.stop_count += 1
+            if self.stop_count >= 5:
+                self.get_logger().info('Drive test completed. Robot stopped.')
+                self.done = True
 
 
 def main(args=None):
     rclpy.init(args=args)
-    
     node = DriveStraightTest()
-    
-    # Keep node alive briefly to ensure stop commands are sent
-    rclpy.spin_once(node, timeout_sec=1.0)
-    
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        while rclpy.ok() and not node.done:
+            rclpy.spin_once(node, timeout_sec=0.1)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # Always leave the robot stopped
+        node.publisher.publish(Twist())
+        node.destroy_node()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':

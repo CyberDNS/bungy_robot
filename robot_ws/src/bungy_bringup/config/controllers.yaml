@@ -23,9 +23,10 @@
     wheel_radius: 0.06
     use_stamped_vel: true
     
-    # Wheel calibration for drift compensation
-    left_wheel_radius_multiplier: 1.0
-    right_wheel_radius_multiplier: 1.0
+    # Wheel calibration (floor test 2026-11-06: 40 cm commanded, 41.3 cm real,
+    # robot curved left by 2.3 cm -> right wheel effectively larger than left)
+    left_wheel_radius_multiplier: 0.981
+    right_wheel_radius_multiplier: 1.0325
     
     # Velocity and acceleration limits
     linear:
