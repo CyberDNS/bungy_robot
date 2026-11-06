@@ -103,6 +103,7 @@ elif [ "$ACTION" = "build" ]; then
         print_status "Building core_ws (bungy_description)..."
         cd core_ws && colcon build --packages-select bungy_description && cd ..
         print_success "core_ws built"
+        source core_ws/install/setup.bash
         
         # Build robot_ws
         print_status "Building robot_ws (bungy_bringup)..."  

@@ -4,7 +4,7 @@
   <name>bungy_monitoring</name>
   <version>1.0.0</version>
   <description>Monitoring and visualization tools for Bungy Robot</description>
-  <maintainer email="your.email@example.com">Your Name</maintainer>
+  <maintainer email="david.ney@live.com">David Ney</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

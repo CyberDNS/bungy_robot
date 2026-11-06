@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch.substitutions import PathJoinSubstitution, Command
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -8,13 +10,29 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
+    # Serial devices (override on the command line, e.g. lidar_port:=/dev/ttyUSB1)
+    dynamixel_port = LaunchConfiguration("dynamixel_port")
+    lidar_port = LaunchConfiguration("lidar_port")
+    port_args = [
+        DeclareLaunchArgument(
+            "dynamixel_port",
+            default_value="/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT78LS5T-if00-port0",
+            description="Serial device of the Dynamixel USB adapter",
+        ),
+        DeclareLaunchArgument(
+            "lidar_port",
+            default_value="/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
+            description="Serial device of the RPLIDAR",
+        ),
+    ]
+
     # Use robot description from core_ws
     urdf_path = PathJoinSubstitution([
         FindPackageShare("bungy_description"), "urdf", "bungy_robot.urdf.xacro"
     ])
 
     robot_description = ParameterValue(
-        Command(["xacro", " ", urdf_path, " use_ros2_control:=true"]),
+        Command(["xacro", " ", urdf_path, " use_ros2_control:=true", " dynamixel_port:=", dynamixel_port]),
         value_type=str
     )
 
@@ -80,7 +98,7 @@ def generate_launch_description():
         name="rplidar_node",
         output="screen",
         parameters=[{
-            "serial_port": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
+            "serial_port": lidar_port,
             "frame_id": "bungy/laser_link",
             "angle_compensate": True,
             "scan_frequency": 7.0,
@@ -145,7 +163,7 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription([
+    return LaunchDescription(port_args + [
         robot_state_publisher,
         controller_manager,
         joint_state_broadcaster_spawner,

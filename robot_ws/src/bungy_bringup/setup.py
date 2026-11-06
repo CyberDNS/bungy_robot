@@ -19,10 +19,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='david',
-    maintainer_email='david@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    maintainer='David Ney',
+    maintainer_email='david.ney@live.com',
+    description='Bringup for the Bungy robot (ros2_control, sensors, EKF, teleop)',
+    license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

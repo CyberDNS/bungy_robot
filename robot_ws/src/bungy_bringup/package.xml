@@ -3,12 +3,20 @@
 <package format="3">
   <name>bungy_bringup</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="david@todo.todo">david</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Bringup for the Bungy robot: ros2_control, sensors, EKF and teleop launch files (runs on the Raspberry Pi)</description>
+  <maintainer email="david.ney@live.com">David Ney</maintainer>
+  <license>MIT</license>
 
   <buildtool_depend>ament_python</buildtool_depend>
 
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>bungy_description</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rplidar_ros</exec_depend>
+  <exec_depend>bno055</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>ros2_control</exec_depend>
   <exec_depend>ros2_controllers</exec_depend>
