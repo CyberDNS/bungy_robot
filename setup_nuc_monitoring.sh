@@ -64,7 +64,7 @@ else
     echo "❌ No robot topics found"
     echo ""
     echo "Troubleshooting steps:"
-    echo "1. Ensure robot is running: ros2 launch bungy_bringup robot_with_joystick.launch.py"
+    echo "1. Ensure robot is running: ros2 launch bungy_bringup robot.launch.py"
     echo "2. Check ROS_DOMAIN_ID=42 is set on both robot and NUC"
     echo "3. Verify network connectivity"
     echo "4. Check firewall settings"

@@ -43,4 +43,4 @@ echo "   - Xbox controller support"
 echo ""
 
 # Launch robot system
-ros2 launch bungy_bringup robot_complete.launch.py
+ros2 launch bungy_bringup robot.launch.py

@@ -1,0 +1,42 @@
+name: Build (ROS 2 Jazzy)
+
+on:
+  push:
+    branches: [main, jazzy]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container: ros:jazzy-ros-base
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          rosdep update --rosdistro jazzy
+          rosdep install -y --rosdistro jazzy --ignore-src \
+            --from-paths core_ws/src robot_ws/src monitoring_ws/src
+
+      - name: Build all workspaces
+        run: ./build.sh all
+
+      - name: Check robot description expands with ros2_control
+        run: |
+          . /opt/ros/jazzy/setup.sh
+          . core_ws/install/setup.sh
+          xacro core_ws/src/bungy_description/urdf/bungy_robot.urdf.xacro \
+            use_ros2_control:=true > /dev/null
+          xacro core_ws/src/bungy_description/urdf/bungy_robot.urdf.xacro > /dev/null
+
+      - name: Check launch files and configs parse
+        run: |
+          python3 -m py_compile \
+            robot_ws/src/bungy_bringup/launch/*.py \
+            monitoring_ws/src/bungy_monitoring/launch/*.py
+          python3 -c "
+          import glob, yaml
+          for f in glob.glob('robot_ws/src/bungy_bringup/config/*.yaml'):
+              yaml.safe_load(open(f))
+          "

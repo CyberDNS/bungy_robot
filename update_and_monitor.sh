@@ -40,7 +40,7 @@ echo "   - LIDAR visualization with smaller dots"
 echo "   - Green arrows show stable odometry path"
 echo ""
 echo "💡 Make sure the robot is running on the Raspberry Pi!"
-echo "   Robot command: ros2 launch bungy_bringup robot_complete.launch.py"
+echo "   Robot command: ros2 launch bungy_bringup robot.launch.py"
 echo ""
 
 # Launch monitoring with a small delay to ensure messages are ready

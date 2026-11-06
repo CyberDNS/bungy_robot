@@ -71,10 +71,12 @@ cd robot_ws
 source setup.bash
 
 # Start robot with Xbox controller
-ros2 launch bungy_bringup robot_with_joystick.launch.py
+ros2 launch bungy_bringup robot.launch.py
 
 # OR start robot only (without joystick)
-ros2 launch bungy_bringup robot.launch.py
+ros2 launch bungy_bringup robot.launch.py joystick:=false
+
+# Other serial devices: dynamixel_port:=/dev/ttyUSB0 lidar_port:=/dev/ttyUSB1
 ```
 
 ### 3. Monitoring from the NUC (Ubuntu dev machine)

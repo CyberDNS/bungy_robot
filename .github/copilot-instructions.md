@@ -52,9 +52,10 @@ cd core_ws && vcs import < ../bungy_robot.humble.repos && rosdep install --from-
 ```
 
 ### Launch Patterns
-- Robot only: `ros2 launch bungy_bringup robot.launch.py`
-- With Xbox controller: `ros2 launch bungy_bringup robot_with_joystick.launch.py`
-- Includes both robot.launch.py and joystick.launch.py via IncludeLaunchDescription
+- Full robot with Xbox controller: `ros2 launch bungy_bringup robot.launch.py`
+- Without joystick: `ros2 launch bungy_bringup robot.launch.py joystick:=false`
+- `robot.launch.py` includes `joystick.launch.py` via IncludeLaunchDescription (argument `joystick`)
+- Serial devices are launch arguments: `dynamixel_port`, `lidar_port`
 
 ### Workspace-Specific Deployment
 - **robot_ws**: Deploy to Raspberry Pi 5 for hardware control
