@@ -23,6 +23,10 @@
   <exec_depend>joy</exec_depend>
   <exec_depend>twist_mux</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>navigation2</exec_depend>
+  <exec_depend>nav2_msgs</exec_depend>
+  <exec_depend>tf2_ros_py</exec_depend>
+  <exec_depend>nav2_bringup</exec_depend>
   <exec_depend>lifecycle_msgs</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>nav2_map_server</exec_depend>

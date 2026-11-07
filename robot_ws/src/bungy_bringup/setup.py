@@ -30,6 +30,7 @@ setup(
             'drive_straight_test = bungy_bringup.drive_straight_test:main',
             'pause_node = bungy_bringup.pause_node:main',
             'joystick_gate = bungy_bringup.joystick_gate:main',
+            'nav2_startup = bungy_bringup.nav2_startup:main',
         ],
     },
 )

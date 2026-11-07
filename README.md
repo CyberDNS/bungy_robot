@@ -139,7 +139,7 @@ ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP
 
 ```
 Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel_joy ─┐
-Nav2 (planned)                              → /cmd_vel_nav ─┼→ twist_mux → /cmd_vel (Twist)
+Nav2 (planned)                              → /cmd_vel_nav_safe ─┼→ twist_mux → /cmd_vel (Twist)
 test scripts (drive_straight_test, ...)     → /cmd_vel_test ┘        ↓
                                                   (locks: /pause_navigation, /e_stop) ↓
 twist_to_stamped_relay → /bungy/diff_cont/cmd_vel (TwistStamped)

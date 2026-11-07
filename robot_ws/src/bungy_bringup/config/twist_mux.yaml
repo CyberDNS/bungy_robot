@@ -5,7 +5,7 @@ twist_mux:
     use_stamped: false        # plain Twist in and out; the relay adds the stamp for the controller
     topics:
       navigation:
-        topic: /cmd_vel_nav     # Nav2
+        topic: /cmd_vel_nav_safe  # Nav2: output of collision_monitor (/cmd_vel_nav is the raw controller output)
         timeout: 0.5
         priority: 10
       test:

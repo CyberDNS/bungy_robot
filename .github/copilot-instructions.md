@@ -26,7 +26,7 @@ All workspaces follow standardized ROS 2 structure: `workspace/src/packages/`, `
 ### Control Flow Architecture
 ```
 Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel_joy ─┐
-Nav2 (planned) → /cmd_vel_nav, test scripts → /cmd_vel_test ──┼→ twist_mux → /cmd_vel (Twist)
+Nav2 (planned) → /cmd_vel_nav_safe, test scripts → /cmd_vel_test ──┼→ twist_mux → /cmd_vel (Twist)
                                            (locks: /pause_navigation, /e_stop) ↓
 twist_to_stamped_relay → /bungy/diff_cont/cmd_vel (TwistStamped)
                                                      ↓
@@ -115,7 +115,7 @@ Adjust wheel radius multipliers in controllers.yaml:
 - Robot drifts right → increase `left_wheel_radius_multiplier: 1.03`
 
 ### Adding New Commands
-When adding velocity commands, publish Twist to one of the twist_mux inputs (`/cmd_vel_joy`, `/cmd_vel_nav`, `/cmd_vel_test`), never directly to `/cmd_vel` or diff_cont. twist_mux owns `/cmd_vel`; the relay converts it to TwistStamped. `/pause_navigation` (Bool; pad button B / Menu) blocks the autonomous inputs but not the joystick; `/e_stop` (Bool) blocks all inputs.
+When adding velocity commands, publish Twist to one of the twist_mux inputs (`/cmd_vel_joy`, `/cmd_vel_nav_safe`, `/cmd_vel_test`), never directly to `/cmd_vel` or diff_cont. twist_mux owns `/cmd_vel`; the relay converts it to TwistStamped. `/pause_navigation` (Bool; pad button B / Menu) blocks the autonomous inputs but not the joystick; `/e_stop` (Bool) blocks all inputs.
 
 ### Debugging Hardware Communication
 Check for "Overrun detected" warnings - these are normal due to Dynamixel serial latency on Raspberry Pi. Performance tuning focuses on update_rate rather than eliminating overruns.
