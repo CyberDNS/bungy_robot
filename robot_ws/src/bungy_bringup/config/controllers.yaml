@@ -19,20 +19,17 @@
     left_wheel_names:  [left_wheel_joint]
     right_wheel_names: [right_wheel_joint]
 
-    # Spin tests (2026-11-06, BNO055 IMU as reference, 1.0 rad/s commanded for 3.14 s):
-    #   wheel_separation 0.2865 -> real 259.5 deg, 0.19 -> real 145.2 deg (180 commanded)
-    # Interpolated to ~0.22 for an accurate half turn at 1.0 rad/s. This is an empirical
-    # command gain, not the geometric spacing (~0.19 m): real turning depends on wheel speed
-    # (slower turns under-rotate, faster ones over-rotate). The EKF takes yaw from the IMU.
-    wheel_separation: 0.22
+    # Calibration baseline for the position-feedback driver (2026-11-07): the old values
+    # (separation 0.22, multipliers 0.981 / 1.0325) compensated the old open-loop servo errors.
+    # Straight-line floor test 2026-11-07 (5 s at 0.2 m/s, 3 runs): odom 101.1-101.2 cm, tape 100.8-101.3 cm,
+    # drift 0.5-3 cm, so radius 0.06 and multipliers 1.0 are correct. wheel_separation still to be calibrated.
+    wheel_separation: 0.19
     wheel_radius: 0.06
     use_stamped_vel: true
-    
-    # Wheel calibration (floor test 2026-11-06: 40 cm commanded, 41.3 cm real,
-    # robot curved left by 2.3 cm -> right wheel effectively larger than left)
-    left_wheel_radius_multiplier: 0.981
-    right_wheel_radius_multiplier: 1.0325
-    
+
+    left_wheel_radius_multiplier: 1.0
+    right_wheel_radius_multiplier: 1.0
+
     # Velocity and acceleration limits
     linear:
       x:
