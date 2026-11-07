@@ -6,7 +6,9 @@ set -e
 name=${1:?usage: save_map.sh NAME}
 dir=${MAP_DIR:-$HOME/maps}
 mkdir -p "$dir"
-source "$(dirname "$0")/../robot_ws/setup.bash" >/dev/null 2>&1
+# robot_ws/setup.bash uses paths relative to robot_ws
+cd "$(dirname "$0")/../robot_ws"
+source ./setup.bash >/dev/null
 ros2 run nav2_map_server map_saver_cli -f "$dir/$name" --ros-args -p map_subscribe_transient_local:=true
 ros2 service call /slam_toolbox/serialize_map slam_toolbox/srv/SerializePoseGraph "{filename: '$dir/$name'}"
 echo "saved to $dir/$name.*"
