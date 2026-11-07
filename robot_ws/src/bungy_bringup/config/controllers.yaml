@@ -22,7 +22,7 @@
     # Calibration baseline for the position-feedback driver (2026-11-07): the old values
     # (separation 0.22, multipliers 0.981 / 1.0325) compensated the old open-loop servo errors.
     # Straight-line floor test 2026-11-07 (5 s at 0.2 m/s, 3 runs): odom 101.1-101.2 cm, tape 100.8-101.3 cm,
-    # drift 0.5-3 cm, so radius 0.06 and multipliers 1.0 are correct. wheel_separation still to be calibrated.
+    # drift 0.5-3 cm, so radius 0.06 and multipliers 1.0 are correct.
     # Spin tests 2026-11-07 (IMU reference, 180 deg at 1.0 and 0.5 rad/s): real/odom = 1.026 / 1.024 with 0.19,
     # the same at both speeds -> 0.19 / 1.025 = 0.185.
     wheel_separation: 0.185
