@@ -26,6 +26,7 @@ class Nav2Startup(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
         self.client = self.create_client(ManageLifecycleNodes, f'/{manager}/manage_nodes')
         self.started = False
+        self.finished = False
         self.waited = 0
         self.timer = self.create_timer(1.0, self.tick)
         self.get_logger().info(
@@ -52,13 +53,15 @@ class Nav2Startup(Node):
         ok = future.result() is not None and future.result().success
         self.get_logger().info('navigation nodes active' if ok else 'starting the navigation nodes FAILED')
         self.timer.cancel()
+        self.finished = True  # main() exits: no need to keep listening to /tf (it used ~20% of a core)
 
 
 def main():
     rclpy.init()
     node = Nav2Startup()
     try:
-        rclpy.spin(node)
+        while rclpy.ok() and not node.finished:
+            rclpy.spin_once(node, timeout_sec=0.2)
     except KeyboardInterrupt:
         pass
     finally:

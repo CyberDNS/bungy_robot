@@ -42,7 +42,7 @@ def generate_launch_description():
 
     to_nav = [("cmd_vel", "cmd_vel_nav")]
     localization = [
-        nav2("nav2_map_server", "map_server", "map_server", extra={"yaml_filename": map_yaml}),
+        nav2("nav2_map_server", "map_server", "map_server", extra={"yaml_filename": map_yaml, "frame_id": "bungy/map"}),
         nav2("nav2_amcl", "amcl", "amcl"),
         Node(package="nav2_lifecycle_manager", executable="lifecycle_manager",
              name="lifecycle_manager_localization", output="screen",
