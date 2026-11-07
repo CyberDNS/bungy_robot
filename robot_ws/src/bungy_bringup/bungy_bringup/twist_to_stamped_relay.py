@@ -21,7 +21,7 @@ class TwistToStampedRelay(Node):
         self.frame_id = self.get_parameter("frame_id").get_parameter_value().string_value
 
         self.input_timeout = self.get_parameter("input_timeout").get_parameter_value().double_value
-        self.last_rx = None
+        self.last_rx = self.get_clock().now()  # until the first command arrives, send zeros
 
         # Publisher and subscriber
         self.publisher_ = self.create_publisher(TwistStamped, output_topic, 10)
@@ -34,8 +34,6 @@ class TwistToStampedRelay(Node):
         )
 
     def watchdog(self):
-        if self.last_rx is None:
-            return
         if (self.get_clock().now() - self.last_rx).nanoseconds * 1e-9 > self.input_timeout:
             self.publish(Twist())
 

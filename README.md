@@ -160,6 +160,21 @@ Priorities (higher wins): joystick 100, test scripts 50, navigation 10. An input
 The relay sends zero velocity as soon as its input goes quiet. Publish velocity commands to one of the
 three input topics, never to `/cmd_vel` directly (the mux owns it).
 
+## Mapping
+
+```bash
+# on the Pi: robot + slam_toolbox (drive around with the stick; B/Menu work as usual)
+cd ~/repos/bungy_robot/robot_ws && source setup.bash
+ros2 launch bungy_bringup mapping.launch.py
+# save when done (maps go to ~/maps): NAME.yaml/.pgm for Nav2, NAME.posegraph/.data for slam_toolbox
+~/repos/bungy_robot/tools/save_map.sh NAME
+# optional, in a second shell: log CPU, temperature and throttling of the Pi
+~/repos/bungy_robot/tools/log_load.sh 5
+```
+
+The map shows up in rviz on the NUC (`bungy.rviz` has a Map display). Config: `robot_ws/src/bungy_bringup/config/slam_toolbox.yaml`
+(frames `bungy/map`, `bungy/odom`, `bungy/base_link`; update rates lowered for the Pi 4).
+
 ## Build System
 
 The enhanced build script provides flexible workspace management:
