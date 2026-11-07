@@ -44,6 +44,19 @@ Machine-specific settings (`ROBOT_IP`, `DYNAMIXEL_WS`) are not stored in the rep
 On each machine run `cp bungy.env.example bungy.env.local` and edit it; the file is
 git-ignored and sourced by the setup scripts.
 
+## Power
+
+* The robot needs a **12 V supply or battery that can deliver at least 3-4 A**. A 12.6 V / 1 A supply is
+  not enough: the Raspberry Pi, RPLIDAR and servos together exceed 12 W, and the Pi reset (power-on reset,
+  kernel "Undervoltage detected" messages) when the stack started. A 3S pack at 12.6 V / 4 A is fine.
+* The 5 V converter feeding the Pi should be rated for at least 3 A.
+* Dynamixel AX-12A servos are specified for 9-12 V (11.1 V recommended); a fully charged 3S pack is
+  slightly above that.
+* A servo keeps its last speed command if the Pi stops (reset, crash, power loss), so the wheels can keep
+  running. The driver monitors the servo supply voltage (warns below 10.5 V, stops below 9.6 V) and stops the
+  wheels on errors, but it cannot help when the Pi itself is gone. Keep the robot on its stand while testing,
+  and add a hardware cut-off before driving unattended.
+
 ## Quick Start
 
 ### 1. Build All Workspaces
