@@ -48,6 +48,10 @@
     imu0_nodelay: false
     imu0_differential: false
     imu0_relative: true
+    # The BNO055 occasionally reports a single wrong heading (+40..110 deg for one sample, seen
+    # even at 50 kHz I2C). Reject IMU yaw further than 3 sigma from the prediction: the EKF
+    # predicts the yaw from the wheel yaw rate, so real turns stay well inside that.
+    imu0_pose_rejection_threshold: 3.0
     imu0_remove_gravitational_acceleration: true
     
     # Process noise covariance matrix
