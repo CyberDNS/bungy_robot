@@ -1,5 +1,5 @@
 #!/bin/bash
-# Robot workspace setup -- runs on the Raspberry Pi 5.
+# Robot workspace setup -- runs on the Raspberry Pi 4.
 
 # Source ROS2 Jazzy environment
 source /opt/ros/jazzy/setup.bash

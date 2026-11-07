@@ -1,10 +1,10 @@
 # Copilot Instructions for Bungy Robot
 
 ## Project Overview
-Bungy Robot is a ROS 2 Jazzy differential drive robot running on Raspberry Pi 5 with Dynamixel AX-12A servos. The project follows a multi-workspace architecture designed for distributed deployment across robot and NUC hardware.
+Bungy Robot is a ROS 2 Jazzy differential drive robot running on Raspberry Pi 4 with Dynamixel AX-12A servos. The project follows a multi-workspace architecture designed for distributed deployment across robot and NUC hardware.
 
 ## Hardware Components
-- **Raspberry Pi 5**: Main robot computer
+- **Raspberry Pi 4**: Main robot computer
 - **Dynamixel AX-12A**: Differential drive servos with custom ros2_control interface
 - **Slamtec RPLIDAR A1**: 2D 360° laser scanner
 - **BNO055**: 9-DOF IMU sensor
@@ -18,7 +18,7 @@ Bungy Robot is a ROS 2 Jazzy differential drive robot running on Raspberry Pi 5 
 All workspaces follow standardized ROS 2 structure: `workspace/src/packages/`, `workspace/setup.bash`
 
 - `core_ws/src/bungy_description/`: Shared robot description (URDF, meshes)
-- `robot_ws/src/bungy_bringup/`: Robot hardware workspace (runs on Raspberry Pi 5)
+- `robot_ws/src/bungy_bringup/`: Robot hardware workspace (runs on Raspberry Pi 4)
 - `monitoring_ws/src/bungy_monitoring/`: Visualization workspace (runs on NUC for monitoring robot/sim)
 - `sim_ws/`: Simulation workspace (future - Gazebo simulation on NUC)
 - `bungy_robot_description/`: Legacy Humble description (reference only, do not modify)
@@ -58,7 +58,7 @@ cd core_ws && vcs import < ../bungy_robot.humble.repos && rosdep install --from-
 - Serial devices are launch arguments: `dynamixel_port`, `lidar_port`
 
 ### Workspace-Specific Deployment
-- **robot_ws**: Deploy to Raspberry Pi 5 for hardware control
+- **robot_ws**: Deploy to Raspberry Pi 4 for hardware control
 - **monitoring_ws**: Run on NUC for visualization/monitoring
 - **sim_ws**: Run on NUC for Gazebo simulation
 - **core_ws**: Shared dependencies across all workspaces

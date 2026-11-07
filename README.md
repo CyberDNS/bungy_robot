@@ -23,7 +23,7 @@ workspace_name/
 
 **Workspaces:**
 - **`core_ws/src/bungy_description/`**: Shared robot description (URDF, meshes)
-- **`robot_ws/src/bungy_bringup/`**: Robot hardware workspace (runs on Raspberry Pi 5)
+- **`robot_ws/src/bungy_bringup/`**: Robot hardware workspace (runs on Raspberry Pi 4)
 - **`monitoring_ws/src/bungy_monitoring/`**: Visualization workspace (runs on the NUC dev machine)
 - **`sim_ws/`**: Simulation workspace (future - will run on NUC)
 
@@ -33,7 +33,7 @@ The project runs on two machines that share one ROS 2 network (`ROS_DOMAIN_ID=42
 
 | Machine | Role | Workspaces | Build |
 |---|---|---|---|
-| **Raspberry Pi 5** (robot) | Runs the real hardware: Dynamixel drive, RPLIDAR, BNO055 IMU, joystick, EKF | `core_ws`, `robot_ws` | `./build.sh pi` |
+| **Raspberry Pi 4** (robot) | Runs the real hardware: Dynamixel drive, RPLIDAR, BNO055 IMU, joystick, EKF | `core_ws`, `robot_ws` | `./build.sh pi` |
 | **NUC** (Ubuntu Linux, ROS 2 Jazzy) | Development machine: RViz monitoring, remote teleop, future Gazebo simulation | `core_ws`, `monitoring_ws`, (`sim_ws`) | `./build.sh dev` |
 
 `core_ws` (`bungy_description`) is the shared robot model and is built on both.
@@ -77,7 +77,7 @@ cd bungy_robot
 ./build.sh monitoring # Build only monitoring workspace
 ```
 
-### 2. Running the Robot (Raspberry Pi 5)
+### 2. Running the Robot (Raspberry Pi 4)
 
 ```bash
 cd robot_ws
@@ -127,7 +127,7 @@ ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP
 
 ## Hardware Components
 
-- **Raspberry Pi 5**: Main robot computer
+- **Raspberry Pi 4**: Main robot computer
 - **Dynamixel AX-12A**: Differential drive servos with custom ros2_control interface
 - **Slamtec RPLIDAR A1**: 2D 360° laser scanner
 - **BNO055**: 9-DOF IMU sensor
