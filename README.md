@@ -183,7 +183,7 @@ The monitoring workspace provides comprehensive visualization:
 
 ```bash
 # Robot visualization
-ros2 run rviz2 rviz2 -d $(ros2 pkg prefix bungy_monitoring)/share/bungy_monitoring/rviz/monitoring_view.rviz
+ros2 run rviz2 rviz2 -d $(ros2 pkg prefix bungy_monitoring)/share/bungy_monitoring/rviz/bungy.rviz
 
 # Topic monitoring
 ros2 topic list

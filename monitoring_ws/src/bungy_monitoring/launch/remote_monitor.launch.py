@@ -26,7 +26,7 @@ def generate_launch_description():
             os.path.join(bungy_monitoring_dir, 'launch', 'monitor_robot.launch.py')
         ]),
         launch_arguments={
-            'rviz_config': os.path.join(bungy_monitoring_dir, 'rviz', 'robot_odom_monitoring.rviz'),
+            'rviz_config': os.path.join(bungy_monitoring_dir, 'rviz', 'bungy.rviz'),
         }.items()
     )
 

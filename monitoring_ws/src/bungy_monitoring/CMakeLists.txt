@@ -8,11 +8,10 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 
-# Install launch files, rviz configs, and urdf files
+# Install launch files, and rviz configs
 install(DIRECTORY
   launch
   rviz
-  urdf
   DESTINATION share/${PROJECT_NAME}/
 )
 
