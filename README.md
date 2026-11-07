@@ -141,17 +141,24 @@ ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP
 Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel_joy ─┐
 Nav2 (planned)                              → /cmd_vel_nav ─┼→ twist_mux → /cmd_vel (Twist)
 test scripts (drive_straight_test, ...)     → /cmd_vel_test ┘        ↓
-                                                  (lock: /e_stop)    ↓
+                                                  (locks: /pause_navigation, /e_stop) ↓
 twist_to_stamped_relay → /bungy/diff_cont/cmd_vel (TwistStamped)
                                                      ↓
                            ros2_control → Dynamixel Hardware
 ```
 
 Priorities (higher wins): joystick 100, test scripts 50, navigation 10. An input that is silent for
-0.5 s counts as zero. **E-stop:** button B on the pad engages it, Menu releases it (also
-`ros2 topic pub --once /e_stop std_msgs/Bool "{data: true}"`). While engaged every input is blocked
-and the relay sends zero velocity. Publish velocity commands to one of the three input topics, never
-to `/cmd_vel` directly (the mux owns it).
+0.5 s counts as zero. Two locks stop inputs of lower priority:
+
+- **Pause** (`/pause_navigation`, priority 75): button **B** pauses autonomous driving, **Menu**
+  resumes it. While paused, navigation and test scripts are blocked but the joystick still works, so
+  the robot can be driven by hand to a safe place; Menu hands control back to navigation.
+- **E-stop** (`/e_stop`, priority 255): blocks every input, including the joystick. No button; for
+  software safety nodes or `ros2 topic pub --once /e_stop std_msgs/Bool "{data: true}"`
+  (`data: false` releases it).
+
+The relay sends zero velocity as soon as its input goes quiet. Publish velocity commands to one of the
+three input topics, never to `/cmd_vel` directly (the mux owns it).
 
 ## Build System
 

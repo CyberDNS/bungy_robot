@@ -90,7 +90,7 @@ def generate_launch_description():
     )
 
     # All velocity sources (joystick, Nav2, test scripts) go through twist_mux, which publishes
-    # /cmd_vel. The e-stop lock on /e_stop blocks every input.
+    # /cmd_vel. Locks: /pause_navigation blocks the autonomous inputs, /e_stop blocks all.
     twist_mux = Node(
         package="twist_mux",
         executable="twist_mux",
@@ -100,10 +100,11 @@ def generate_launch_description():
         remappings=[("cmd_vel_out", "/cmd_vel")],
     )
 
-    estop = Node(
+    # B pauses autonomous driving (joystick still works), Menu resumes it
+    pause_button = Node(
         package="bungy_bringup",
-        executable="estop_node",
-        name="estop",
+        executable="pause_node",
+        name="pause",
         output="screen",
     )
 
@@ -173,7 +174,7 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         diff_drive_controller_spawner,
         twist_mux,
-        estop,
+        pause_button,
         twist_relay,
         lidar_node,
         imu_node,

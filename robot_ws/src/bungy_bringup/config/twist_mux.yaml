@@ -17,7 +17,11 @@ twist_mux:
         timeout: 0.5
         priority: 100
     locks:
+      pause_navigation:
+        topic: /pause_navigation  # std_msgs/Bool, latched; set by pause_node (B / Menu)
+        timeout: 0.0
+        priority: 75            # blocks navigation (10) and test scripts (50), not the joystick (100)
       e_stop:
-        topic: /e_stop          # std_msgs/Bool, latched; see estop_node
+        topic: /e_stop          # std_msgs/Bool, latched; hard stop from software, no button
         timeout: 0.0
         priority: 255           # blocks everything

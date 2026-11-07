@@ -28,10 +28,19 @@ def generate_launch_description():
         executable='teleop_node',
         name='teleop_node',
         parameters=[joy_params],
-        remappings=[('/cmd_vel', '/cmd_vel_joy')]  # into twist_mux
+        remappings=[('/cmd_vel', '/cmd_vel_joy_raw')]  # through the gate into twist_mux
+    )
+
+    # forwards the stick to twist_mux only while it is used (see joystick_gate.py)
+    gate_node = Node(
+        package='bungy_bringup',
+        executable='joystick_gate',
+        name='joystick_gate',
+        output='screen',
     )
 
     return LaunchDescription([
         joy_node,
         teleop_node,
+        gate_node,
     ])

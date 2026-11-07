@@ -28,7 +28,8 @@ setup(
         'console_scripts': [
             'twist_to_stamped_relay = bungy_bringup.twist_to_stamped_relay:main',
             'drive_straight_test = bungy_bringup.drive_straight_test:main',
-            'estop_node = bungy_bringup.estop_node:main',
+            'pause_node = bungy_bringup.pause_node:main',
+            'joystick_gate = bungy_bringup.joystick_gate:main',
         ],
     },
 )
