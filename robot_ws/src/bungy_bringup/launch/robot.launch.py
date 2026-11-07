@@ -108,6 +108,14 @@ def generate_launch_description():
         output="screen",
     )
 
+    # battery voltage / current from the INA219 -> /bungy/battery
+    battery = Node(
+        package="bungy_bringup",
+        executable="battery_node",
+        name="battery",
+        output="screen",
+    )
+
     # /cmd_vel (Twist) -> /bungy/diff_cont/cmd_vel (TwistStamped)
     twist_relay = Node(
         package="bungy_bringup",
@@ -175,6 +183,7 @@ def generate_launch_description():
         diff_drive_controller_spawner,
         twist_mux,
         pause_button,
+        battery,
         twist_relay,
         lidar_node,
         imu_node,

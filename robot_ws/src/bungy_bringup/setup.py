@@ -31,6 +31,7 @@ setup(
             'pause_node = bungy_bringup.pause_node:main',
             'joystick_gate = bungy_bringup.joystick_gate:main',
             'nav2_startup = bungy_bringup.nav2_startup:main',
+            'battery_node = bungy_bringup.battery_node:main',
         ],
     },
 )
