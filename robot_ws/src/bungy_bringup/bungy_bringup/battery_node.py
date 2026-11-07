@@ -66,6 +66,9 @@ class BatteryNode(Node):
             return
         if shunt_raw >= 0x8000:
             shunt_raw -= 0x10000
+        if abs(shunt_raw) >= 32000:   # +-320 mV full scale = 3.2 A with the 0.1 ohm shunt
+            self.get_logger().warn('INA219 shunt saturated (>3.2 A): the current reading is clipped',
+                                   throttle_duration_sec=10.0)
         voltage = (bus_raw >> 3) * 0.004
         current = shunt_raw * 10e-6 / self.shunt       # A, positive = the load draws current
 
