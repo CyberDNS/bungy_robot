@@ -138,12 +138,20 @@ ros2 launch bungy_monitoring remote_monitor.launch.py robot_ip:=$ROBOT_IP
 ## Control Flow
 
 ```
-Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel (Twist)
-                                                     ↓
+Xbox Controller → joy_node → teleop_twist_joy → /cmd_vel_joy ─┐
+Nav2 (planned)                              → /cmd_vel_nav ─┼→ twist_mux → /cmd_vel (Twist)
+test scripts (drive_straight_test, ...)     → /cmd_vel_test ┘        ↓
+                                                  (lock: /e_stop)    ↓
 twist_to_stamped_relay → /bungy/diff_cont/cmd_vel (TwistStamped)
                                                      ↓
                            ros2_control → Dynamixel Hardware
 ```
+
+Priorities (higher wins): joystick 100, test scripts 50, navigation 10. An input that is silent for
+0.5 s counts as zero. **E-stop:** button B on the pad engages it, Menu releases it (also
+`ros2 topic pub --once /e_stop std_msgs/Bool "{data: true}"`). While engaged every input is blocked
+and the relay sends zero velocity. Publish velocity commands to one of the three input topics, never
+to `/cmd_vel` directly (the mux owns it).
 
 ## Build System
 

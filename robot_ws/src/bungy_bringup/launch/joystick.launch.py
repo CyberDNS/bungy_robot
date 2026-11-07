@@ -28,7 +28,7 @@ def generate_launch_description():
         executable='teleop_node',
         name='teleop_node',
         parameters=[joy_params],
-        remappings=[('/cmd_vel', '/cmd_vel')]  # Output to our twist relay input
+        remappings=[('/cmd_vel', '/cmd_vel_joy')]  # into twist_mux
     )
 
     return LaunchDescription([

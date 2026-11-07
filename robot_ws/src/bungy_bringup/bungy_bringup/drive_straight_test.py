@@ -3,7 +3,7 @@
 
 Usage: ros2 run bungy_bringup drive_straight_test [--ros-args -p speed:=0.2 -p angular:=0.0 -p duration:=2.0]
 Spin test: -p speed:=0.0 -p angular:=0.5 -p duration:=6.28  (about 180 deg)
-Publishes Twist on /cmd_vel (the twist_to_stamped_relay forwards it to the controller).
+Publishes Twist on /cmd_vel_test (twist_mux -> /cmd_vel -> twist_to_stamped_relay -> controller).
 """
 import rclpy
 from rclpy.node import Node
@@ -20,7 +20,7 @@ class DriveStraightTest(Node):
         self.angular = self.get_parameter('angular').value
         self.duration = self.get_parameter('duration').value
 
-        self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.publisher = self.create_publisher(Twist, '/cmd_vel_test', 10)
         self.start = None
         self.stop_count = 0
         self.done = False

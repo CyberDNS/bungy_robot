@@ -89,6 +89,24 @@ def generate_launch_description():
         output="screen",
     )
 
+    # All velocity sources (joystick, Nav2, test scripts) go through twist_mux, which publishes
+    # /cmd_vel. The e-stop lock on /e_stop blocks every input.
+    twist_mux = Node(
+        package="twist_mux",
+        executable="twist_mux",
+        name="twist_mux",
+        output="screen",
+        parameters=[PathJoinSubstitution([FindPackageShare("bungy_bringup"), "config", "twist_mux.yaml"])],
+        remappings=[("cmd_vel_out", "/cmd_vel")],
+    )
+
+    estop = Node(
+        package="bungy_bringup",
+        executable="estop_node",
+        name="estop",
+        output="screen",
+    )
+
     # /cmd_vel (Twist) -> /bungy/diff_cont/cmd_vel (TwistStamped)
     twist_relay = Node(
         package="bungy_bringup",
@@ -154,6 +172,8 @@ def generate_launch_description():
         controller_manager,
         joint_state_broadcaster_spawner,
         diff_drive_controller_spawner,
+        twist_mux,
+        estop,
         twist_relay,
         lidar_node,
         imu_node,

@@ -1,0 +1,23 @@
+# Command mux: every source publishes on its own topic, twist_mux picks one and publishes /cmd_vel.
+# Higher priority wins. An input that is silent for longer than its timeout is replaced by zero.
+twist_mux:
+  ros__parameters:
+    use_stamped: false        # plain Twist in and out; the relay adds the stamp for the controller
+    topics:
+      navigation:
+        topic: /cmd_vel_nav     # Nav2
+        timeout: 0.5
+        priority: 10
+      test:
+        topic: /cmd_vel_test    # test scripts (drive_straight_test, ...)
+        timeout: 0.5
+        priority: 50
+      joystick:
+        topic: /cmd_vel_joy     # teleop_twist_joy
+        timeout: 0.5
+        priority: 100
+    locks:
+      e_stop:
+        topic: /e_stop          # std_msgs/Bool, latched; see estop_node
+        timeout: 0.0
+        priority: 255           # blocks everything
