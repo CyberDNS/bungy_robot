@@ -9,21 +9,42 @@
   <xacro:property name="wheel_separation" value="0.184" />
   <xacro:property name="wheel_radius" value="0.06" />
   
-  <!-- Base link -->
+  <xacro:property name="wheel_width" value="0.01" />
+
+  <!-- Geometry from assets/models/Bungy.stl. base_link = wheel axle centre, 0.06 m above the floor,
+       x towards the wheel side (forward). The plates are 0.164 m wide and reach 0.064 m in front of
+       and 0.128 m behind the axle; the wheels make the overall width 0.194 m. -->
+  <!-- Base link: lower body (bottom plate .. third plate) and the upper deck behind the axle
+       (third plate .. top plate, carries the lidar) -->
   <link name="base_link">
     <visual>
-      <origin xyz="-0.032 0 0"/>
+      <origin xyz="-0.032 0 0.01375"/>
       <geometry>
-        <box size="0.192 0.194 0.1"/>
+        <box size="0.192 0.164 0.115"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.0 0.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.064 0 0.09375"/>
+      <geometry>
+        <box size="0.128 0.164 0.045"/>
       </geometry>
       <material name="blue">
         <color rgba="0.0 0.0 1.0 1.0"/>
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.032 0 0"/>
+      <origin xyz="-0.032 0 0.01375"/>
       <geometry>
-        <box size="0.192 0.194 0.1"/>
+        <box size="0.192 0.164 0.115"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.064 0 0.09375"/>
+      <geometry>
+        <box size="0.128 0.164 0.045"/>
       </geometry>
     </collision>
     <inertial>
@@ -36,7 +57,7 @@
   <link name="left_wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="${wheel_radius}" length="0.05"/>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
       </geometry>
       <material name="black">
         <color rgba="0.0 0.0 0.0 1.0"/>
@@ -44,7 +65,7 @@
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="${wheel_radius}" length="0.05"/>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
       </geometry>
     </collision>
     <inertial>
@@ -57,7 +78,7 @@
   <link name="right_wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="${wheel_radius}" length="0.05"/>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
       </geometry>
       <material name="black">
         <color rgba="0.0 0.0 0.0 1.0"/>
@@ -65,7 +86,7 @@
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="${wheel_radius}" length="0.05"/>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
       </geometry>
     </collision>
     <inertial>
@@ -90,19 +111,22 @@
     <axis xyz="0 0 1"/>
   </joint>
 
-  <!-- LIDAR Link -->
+  <!-- LIDAR Link (RPLIDAR A1). laser_link sits in the scan plane; the visual is the rotor
+       (diameter 0.07 m, from 0.018 m below to 0.006 m above the scan plane) -->
   <link name="laser_link">
     <visual>
+      <origin xyz="0 0 -0.006"/>
       <geometry>
-        <cylinder radius="0.05" length="0.04"/>
+        <cylinder radius="0.035" length="0.024"/>
       </geometry>
       <material name="red">
         <color rgba="1.0 0.0 0.0 1.0"/>
       </material>
     </visual>
     <collision>
+      <origin xyz="0 0 -0.006"/>
       <geometry>
-        <cylinder radius="0.05" length="0.04"/>
+        <cylinder radius="0.035" length="0.024"/>
       </geometry>
     </collision>
     <inertial>
@@ -111,11 +135,12 @@
     </inertial>
   </link>
 
-  <!-- LIDAR Joint -->
+  <!-- LIDAR Joint: rotor centre 0.068875 m behind the axle (STL), scan plane 0.195 m above the
+       floor (measured) = 0.135 m above the axle -->
   <joint name="laser_joint" type="fixed">
     <parent link="base_link"/>
     <child link="laser_link"/>
-    <origin xyz="-0.068875 0.0 0.09" rpy="0 0 0"/>
+    <origin xyz="-0.068875 0.0 0.135" rpy="0 0 0"/>
   </joint>
 
   <!-- IMU Link -->
@@ -139,11 +164,40 @@
     </inertial>
   </link>
 
-  <!-- IMU Joint -->
+  <!-- IMU Joint: BNO055 on the second plate, in the holder near the centre that is turned by 90 deg
+       (STL), z up and x forward. Only the IMU yaw is fused, so the position is not critical. -->
   <joint name="imu_joint" type="fixed">
     <parent link="base_link"/>
     <child link="imu_link"/>
-    <origin xyz="0.0 0.0 0.05" rpy="0 0 0"/>
+    <origin xyz="-0.008 0.008 0.034" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Caster: Roomba swivel wheel (diameter 0.025 m) 0.091 m behind the axle, modelled as a sphere
+       touching the floor; fixed, so a simulator must give it zero friction -->
+  <link name="caster_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.0125"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.0125"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.02"/>
+      <inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001" iyz="0.0" izz="0.000001"/>
+    </inertial>
+  </link>
+
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_link"/>
+    <origin xyz="-0.091 0.0 -0.0475" rpy="0 0 0"/>
   </joint>
 
   <!-- Conditional ros2_control inclusion -->

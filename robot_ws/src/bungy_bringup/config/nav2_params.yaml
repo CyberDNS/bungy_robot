@@ -7,7 +7,8 @@
 #  - Pi load: controller 10 Hz, local costmap 5 Hz / global 1 Hz, AMCL 200-1000 particles
 #  - the final command is collision_monitor's output on /cmd_vel_nav_safe, which is the twist_mux input
 #    for navigation (config/twist_mux.yaml)
-#  - robot_radius 0.17 m is estimated from the URDF body (0.25 x 0.15 m) and the wheels: measure the robot!
+#  - robot_radius 0.17 m: the farthest point of the robot from base_link (rear chassis corner, 0.128 m
+#    behind the axle, 0.097 m to the side) is 0.161 m (STL)
 amcl:
   ros__parameters: {alpha1: 0.2, alpha2: 0.2, alpha3: 0.2, alpha4: 0.2, alpha5: 0.2,
     base_frame_id: bungy/base_link, beam_skip_distance: 0.5, beam_skip_error_threshold: 0.9,

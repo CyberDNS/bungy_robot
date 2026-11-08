@@ -35,9 +35,10 @@ one obstacle, several, side by side with Nav2.
 
 ## Robot geometry
 
-Measured values (STL and tape, found in `bungy_robot_rl`) now in the URDF: lidar x = -0.068875 m (it
-was +0.08, the wrong sign: AMCL, SLAM and costmaps use it) and the chassis box of 0.192 x 0.194 m, which
-reaches 0.128 m behind the axle and only 0.064 m in front. The collision monitor footprint follows that
-outline. Nav2's `robot_radius` 0.17 m is conservative (farthest point 0.150 m). Not yet checked: the
-lidar mounting yaw (`laser_yaw`, launch argument, default 0), mass and centre of mass, motor lag. The
-lidar z (0.09) was left alone: the simulator's 0.133 is measured from another origin.
+Measured values (STL and tape, found in `bungy_robot_rl`) now in the URDF: lidar x = -0.068875 m (it was
++0.08, the wrong sign: AMCL, SLAM and costmaps use it) and the chassis of 0.192 x 0.164 m (0.194 m wide
+with the wheels), which reaches 0.128 m behind the axle and only 0.064 m in front. The collision monitor
+footprint follows that outline. Nav2's `robot_radius` 0.17 m is conservative (farthest point 0.161 m).
+The lidar mounting yaw (`laser_yaw`, launch argument, default 0) was checked on the robot. Not yet
+checked: mass and centre of mass, motor lag. The lidar z is 0.135 m above the axle (scan plane measured
+0.195 m above the floor).

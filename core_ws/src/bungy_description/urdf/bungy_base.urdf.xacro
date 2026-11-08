@@ -4,9 +4,9 @@
   <!-- Robot physical properties - shared constants -->
   <xacro:property name="wheel_separation" value="0.184" />
   <xacro:property name="wheel_radius" value="0.06" />
-  <xacro:property name="base_width" value="0.192" />
-  <xacro:property name="base_length" value="0.194" />
-  <xacro:property name="base_height" value="0.1" />
+  <xacro:property name="base_length" value="0.192" />
+  <xacro:property name="base_width" value="0.164" />
+  <xacro:property name="base_height" value="0.16" />
   
   <!-- Base link - structural definition only -->
   <link name="base_link">
@@ -61,7 +61,7 @@
   <joint name="laser_joint" type="fixed">
     <parent link="base_link"/>
     <child link="laser_link"/>
-    <origin xyz="-0.068875 0.0 0.09" rpy="0 0 0"/>
+    <origin xyz="-0.068875 0.0 0.135" rpy="0 0 0"/>
   </joint>
 
 </robot>
