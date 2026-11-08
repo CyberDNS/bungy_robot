@@ -14,7 +14,7 @@ collision_monitor:
     base_shift_correction: true
     stop_pub_timeout: 2.0
     polygons: [FootprintApproach]
-    FootprintApproach: {type: polygon, action_type: approach, points: [0.084, 0.117, 0.084, -0.117, -0.148, -0.117, -0.148, 0.117],
+    FootprintApproach: {type: polygon, action_type: approach, points: "[[0.084, 0.117], [0.084, -0.117], [-0.148, -0.117], [-0.148, 0.117]]",
       time_before_collision: 1.2, simulation_time_step: 0.1, min_points: 6, visualize: false,
       enabled: true}
     observation_sources: [scan]
