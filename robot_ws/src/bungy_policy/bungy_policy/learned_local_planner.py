@@ -44,6 +44,35 @@ def import_onnxruntime(extra_path):
         return onnxruntime
 
 
+def mark_blind_runs(ranges, near=0.3, range_min=0.15):
+    """The RPLIDAR reports objects closer than its minimum range as +inf, not as a small value
+    (measured with a hand in front of it). The policy would read that as "nothing there".
+    A run of inf/NaN with a close reading (< ``near`` m) on BOTH sides is an object we cannot
+    measure, so it becomes ``range_min``; a run next to something far is real open space and stays.
+    The scan is circular. Returns a new array.
+    """
+    r = np.array(ranges, dtype=np.float64)
+    bad = ~np.isfinite(r) & ~np.isneginf(r)
+    n = len(r)
+    if not bad.any() or bad.all():
+        return r
+    start = int(np.argmin(bad))  # a valid sample, so runs never straddle the array end
+    order = (np.arange(n) + start) % n
+    i = 0
+    while i < n:
+        if not bad[order[i]]:
+            i += 1
+            continue
+        j = i
+        while j + 1 < n and bad[order[j + 1]]:
+            j += 1
+        before, after = r[order[i - 1]], r[order[(j + 1) % n]]
+        if before < near and after < near:
+            r[order[i:j + 1]] = range_min
+        i = j + 1
+    return r
+
+
 class LearnedLocalPlanner(Node):
     def __init__(self):
         super().__init__('learned_local_planner')
@@ -151,7 +180,7 @@ class LearnedLocalPlanner(Node):
 
         s = self.scan
         angles = s.angle_min + np.arange(len(s.ranges)) * s.angle_increment
-        bins = bin_scan(angles, np.asarray(s.ranges, dtype=np.float64), yaw_offset=self.laser_yaw)
+        bins = bin_scan(angles, mark_blind_runs(s.ranges), yaw_offset=self.laser_yaw)
         tw = self.odom.twist.twist
         obs = make_observation(bins, (gx, gy), tw.linear.x, tw.angular.z)
         action = self.sess.run(None, {'obs': obs[None]})[0][0]

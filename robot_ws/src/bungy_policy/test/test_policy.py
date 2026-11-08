@@ -32,3 +32,18 @@ def test_model_matches_json_and_runs():
     out = sess.run(None, {'obs': np.zeros((1, OBS_DIM), np.float32)})[0][0]
     v, w = action_to_twist(out)
     assert -0.15 <= v <= 0.3 and -1.0 <= w <= 1.0
+
+
+def test_blind_runs_are_marked_but_open_space_is_not():
+    from bungy_policy.learned_local_planner import mark_blind_runs
+    inf = np.inf
+    # hand: close, inf block, close  -> the block becomes range_min
+    r = np.array([2.0, 0.10, inf, inf, inf, 0.12, 2.0])
+    assert list(mark_blind_runs(r)[2:5]) == [0.15] * 3
+    # doorway: close wall, inf block, far wall -> stays inf
+    r = np.array([2.0, 0.10, inf, inf, 5.0, 2.0])
+    assert np.all(np.isinf(mark_blind_runs(r)[2:4]))
+    # run across the array end, and all-inf scans, do not crash
+    r = np.array([inf, 0.1, 2.0, 2.0, 0.1, inf])
+    assert np.all(mark_blind_runs(r)[[0, 5]] == 0.15)
+    assert np.all(np.isinf(mark_blind_runs(np.full(10, inf))))
