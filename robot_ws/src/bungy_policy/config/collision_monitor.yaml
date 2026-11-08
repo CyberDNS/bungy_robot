@@ -1,0 +1,21 @@
+# Collision monitor for the learned policy. Same settings as in bungy_bringup/config/nav2_params.yaml,
+# but with a fixed footprint polygon, because the policy launch does not run the local costmap that
+# publishes /local_costmap/published_footprint. Footprint = the measured chassis outline from the
+# STL (x -0.128 ... +0.064 from the axle, y +-0.097) plus a 2 cm margin; x points to the wheel side.
+collision_monitor:
+  ros__parameters:
+    base_frame_id: bungy/base_link
+    odom_frame_id: bungy/odom
+    cmd_vel_in_topic: cmd_vel_smoothed
+    cmd_vel_out_topic: cmd_vel_nav_safe
+    state_topic: collision_monitor_state
+    transform_tolerance: 0.2
+    source_timeout: 1.0
+    base_shift_correction: true
+    stop_pub_timeout: 2.0
+    polygons: [FootprintApproach]
+    FootprintApproach: {type: polygon, action_type: approach, points: [0.084, 0.117, 0.084, -0.117, -0.148, -0.117, -0.148, 0.117],
+      time_before_collision: 1.2, simulation_time_step: 0.1, min_points: 6, visualize: false,
+      enabled: true}
+    observation_sources: [scan]
+    scan: {type: scan, topic: /scan, min_height: 0.15, max_height: 2.0, enabled: true}

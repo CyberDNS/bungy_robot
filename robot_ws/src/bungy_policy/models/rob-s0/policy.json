@@ -1,0 +1,53 @@
+{
+  "onnx": "policy.onnx",
+  "source_model": "policies/rob-s0/final_model.zip",
+  "source_sha256": "a836711006bdfe0c983afeaefdb5de7a9f73fb700e5d9f23c81c9d09c03b6db3",
+  "git_commit": "7a035db",
+  "exported": "2026-11-08 14:13:06",
+  "control_hz": 10.0,
+  "input": {
+    "name": "obs",
+    "dtype": "float32",
+    "shape": [
+      1,
+      41
+    ],
+    "layout": {
+      "lidar": [
+        0,
+        36
+      ],
+      "goal_distance": 36,
+      "goal_bearing_cos_sin": [
+        37,
+        39
+      ],
+      "velocity_yaw_rate": [
+        39,
+        41
+      ]
+    }
+  },
+  "output": {
+    "name": "action",
+    "dtype": "float32",
+    "shape": [
+      1,
+      2
+    ],
+    "range": [
+      -1,
+      1
+    ]
+  },
+  "constants": {
+    "n_rays": 36,
+    "lidar_obs_range_m": 4.0,
+    "lidar_min_range_m": 0.15,
+    "lidar_max_range_m": 12.0,
+    "goal_scale_m": 5.656854249492381,
+    "v_max": 0.3,
+    "v_min": -0.15,
+    "w_max": 1.0
+  }
+}

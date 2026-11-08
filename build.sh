@@ -31,7 +31,7 @@ show_usage() {
     echo ""
     echo "Workspaces:"
     echo "  core        - Build core_ws (bungy_description)"
-    echo "  robot       - Build robot_ws (bungy_bringup)"  
+    echo "  robot       - Build robot_ws (bungy_bringup, bungy_policy)"  
     echo "  monitoring  - Build monitoring_ws (bungy_monitoring)"
     echo "  pi          - Raspberry Pi: core_ws + robot_ws"
     echo "  dev         - NUC/Ubuntu dev+sim machine: core_ws + monitoring_ws"
