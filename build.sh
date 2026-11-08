@@ -107,7 +107,7 @@ elif [ "$ACTION" = "build" ]; then
         
         # Build robot_ws
         print_status "Building robot_ws (bungy_bringup)..."  
-        cd robot_ws && colcon build --packages-select bungy_bringup && cd ..
+        cd robot_ws && colcon build --packages-select bungy_bringup bungy_policy && cd ..
         print_success "robot_ws built"
         
         # Build monitoring_ws
@@ -128,7 +128,7 @@ elif [ "$ACTION" = "build" ]; then
                 if [ -f "core_ws/install/setup.bash" ]; then
                     source core_ws/install/setup.bash
                 fi
-                cd robot_ws && colcon build --packages-select bungy_bringup && cd ..
+                cd robot_ws && colcon build --packages-select bungy_bringup bungy_policy && cd ..
                 ;;
             "monitoring")
                 print_status "Building monitoring_ws..."
